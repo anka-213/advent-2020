@@ -1,5 +1,5 @@
 cabal-version:       2.4
-name:                advent-2020
+name:                advent2020
 version:             0.0.0.0
 synopsis:            My Haskell solutions to Advent of Code 2020
 description:         My Haskell solutions to Advent of Code 2020
@@ -22,10 +22,10 @@ source-repository head
 common common-options
   build-depends:       base ^>= 4.13.0.0
                      , relude
-  
+
   mixins:              base hiding (Prelude)
                      , relude (Relude as Prelude)
-  
+
   ghc-options:         -Wall
                        -Wcompat
                        -Widentities
@@ -48,21 +48,21 @@ library
   hs-source-dirs:      src
   exposed-modules:     Advent2020
 
-executable advent-2020
+executable advent2020
   import:              common-options
   hs-source-dirs:      app
   main-is:             Main.hs
-  build-depends:       advent-2020
+  build-depends:       advent2020
   ghc-options:         -threaded
                        -rtsopts
                        -with-rtsopts=-N
 
-test-suite advent-2020-test
+test-suite advent2020-test
   import:              common-options
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
-  build-depends:       advent-2020
+  build-depends:       advent2020
   ghc-options:         -threaded
                        -rtsopts
                        -with-rtsopts=-N
