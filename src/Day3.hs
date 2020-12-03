@@ -11,7 +11,10 @@ import Data.List (unfoldr)
 import AdventDay
 
 
-type Grid = [[Cell]]
+newtype Grid = Grid {unGrid :: [[Cell]]}
+
+instance Show Grid where
+  show = unlines . map ((++" …") . take 20 . concatMap show) . unGrid
 
 data Cell = Empty | Tree
   deriving (Bounded, Enum)
@@ -27,12 +30,14 @@ data Direction = Horiz | Vert
 
 type Change = Grid -> Grid
 
+mapGrid :: ([[Cell]] -> [[Cell]]) -> Change
+mapGrid f = Grid . f . unGrid
 
 day3 :: Day Grid
 day3 = Day
     { dayNr = 3
-    , parser = parseDay3
-    , part1 = undefined
+    , parser = expandGrid . parseDay3
+    , part1 = countTreesOnSlope
     , part2 = undefined
     }
 
@@ -45,16 +50,16 @@ parseCell :: Char -> Cell
 parseCell = fromMaybe (error "Unexpected char") . inverseMap displayCell
 
 parseDay3 :: String -> Grid
-parseDay3 = (map . map) parseCell . lines
+parseDay3 = Grid . (map . map) parseCell . lines
 
 expandGrid :: Grid -> Grid
-expandGrid = map cycle
+expandGrid = mapGrid $ map cycle
 
 stepRight :: Grid -> Grid
-stepRight = map tail
+stepRight = mapGrid $ map tail
 
 stepDown :: Grid -> Grid
-stepDown = drop 1
+stepDown = mapGrid $ drop 1
 
 stepDir :: Direction -> Grid -> Grid
 stepDir Horiz = stepRight
@@ -70,7 +75,7 @@ moveSlope :: Slope -> Change
 moveSlope Slope{down, right} = moveDir down Vert . moveDir right Horiz
 
 here :: Grid -> Maybe Cell
-here = listToMaybe <=< listToMaybe
+here = listToMaybe <=< listToMaybe . unGrid
 
 countTrees :: [Cell] -> Int
 countTrees = countSat isTree
@@ -85,7 +90,33 @@ followSlope slope = unfoldr slopeStep
     slopeStep :: Grid -> Maybe (Cell, Grid)
     slopeStep g = (,moveSlope slope g) <$> here g
 
--- >>> getSampleInput day3
--- test/cases/day3.input: openFile: does not exist (No such file or directory)
+defaultSlope :: Slope
+defaultSlope = Slope {right = 3, down = 1}
+
+countTreesOnSlope :: Grid -> Int
+countTreesOnSlope = countTrees . followSlope defaultSlope
+
+-- >>>  getSampleInput day3
+-- ..##.........##..... …
+-- #...#...#..#...#...# …
+-- .#....#..#..#....#.. …
+-- ..#.#...#.#..#.#...# …
+-- .#...##..#..#...##.. …
+-- ..#.##.......#.##... …
+-- .#.#.#....#.#.#.#... …
+-- .#........#.#....... …
+-- #.##...#...#.##...#. …
+-- #...##....##...##... …
+-- .#..#...#.#.#..#...# …
+
+-- >>> followSlope defaultSlope <$> getSampleInput day3
+-- [.,.,#,.,#,#,.,#,#,#,#]
+-- [.,.,#,.,#,#,.,#,#,#,#]
+
+-- >>> runDay day3 Part1 Sample
+-- 7
+
+-- >>> runDay day3 Part1 Real
+-- 189
 
 --
