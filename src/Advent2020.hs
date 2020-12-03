@@ -9,12 +9,12 @@ My Haskell solutions to Advent of Code 2020
 module Advent2020
   ( module Advent2020
   , module Day1
---   , module Day2
+  , module Day2
   )
   where
 
 import Day1
--- import Day2
+import Day2
 
 someFunc :: IO ()
 someFunc = putStrLn ("someFunc" :: String)
