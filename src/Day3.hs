@@ -8,6 +8,7 @@ import Data.Maybe (listToMaybe, fromMaybe)
 import Control.Monad ((<=<))
 import Util
 import Data.List (unfoldr)
+import AdventDay
 
 
 type Grid = [[Cell]]
@@ -25,6 +26,16 @@ data Direction = Horiz | Vert
   deriving Show
 
 type Change = Grid -> Grid
+
+
+day3 :: Day Grid
+day3 = Day
+    { dayNr = 3
+    , parser = parseDay3
+    , part1 = undefined
+    , part2 = undefined
+    }
+
 
 displayCell :: Cell -> Char
 displayCell Empty = '.'
@@ -73,3 +84,8 @@ followSlope slope = unfoldr slopeStep
   where
     slopeStep :: Grid -> Maybe (Cell, Grid)
     slopeStep g = (,moveSlope slope g) <$> here g
+
+-- >>> getSampleInput day3
+-- test/cases/day3.input: openFile: does not exist (No such file or directory)
+
+--

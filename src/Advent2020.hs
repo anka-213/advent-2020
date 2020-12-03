@@ -11,12 +11,14 @@ module Advent2020
   , module Day1
   , module Day2
   , module Day3
+  , module AdventDay
   )
   where
 
 import Day1
 import Day2
 import Day3
+import AdventDay
 
 someFunc :: IO ()
 someFunc = putStrLn ("someFunc" :: String)

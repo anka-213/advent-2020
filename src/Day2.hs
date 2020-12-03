@@ -3,6 +3,15 @@ module Day2 where
 
 import Text.ParserCombinators.ReadP
 import Util
+import AdventDay
+
+day2 :: Day [PPPair]
+day2 = Day
+    { dayNr = 2
+    , parser = parseDay2
+    , part1 = countValid
+    , part2 = countValidP2
+    }
 
 data Range = Range {from :: Int, to :: Int}
   deriving Show
@@ -43,17 +52,8 @@ passwd = many get
 parseLine :: String -> PPPair
 parseLine = parse $ (,) <$> policy <* string ": " <*> passwd <* eof
 
-parseFile :: String -> [PPPair]
-parseFile = map parseLine . lines
-
-readInputFile :: FilePath -> IO [PPPair]
-readInputFile = fmap parseFile . readFile
-
-getMyInput :: IO [PPPair]
-getMyInput = readInputFile "day2/input.txt"
-
-getSampleInput :: IO [PPPair]
-getSampleInput = readInputFile "test/cases/day2.input"
+parseDay2 :: String -> [PPPair]
+parseDay2 = map parseLine . lines
 
 checkPasswd :: Policy -> Password -> Bool
 checkPasswd Policy{range, currentChar} pass =
@@ -62,10 +62,10 @@ checkPasswd Policy{range, currentChar} pass =
 countValid :: [PPPair] -> Int
 countValid = countSat (uncurry checkPasswd)
 
--- >>> countValid <$> getSampleInput
+-- >>> countValid <$> getSampleInput day2
 -- 2
 
--- >>> countValid <$> getMyInput
+-- >>> countValid <$> getMyInput day2
 -- 515
 
 -- * Part 2
@@ -83,14 +83,11 @@ countValidP2 :: [PPPair] -> Int
 countValidP2 = countSat (uncurry checkPasswdPart2)
 
 
-day2part1 :: String -> Int
-day2part1 = countValid . parseFile
-
 day2part2 :: String -> Int
-day2part2 = countValidP2 . parseFile
+day2part2 = countValidP2 . parseDay2
 
--- >>> countValidP2 <$> getSampleInput
+-- >>> countValidP2 <$> getSampleInput day2
 -- 1
 
--- >>> countValidP2 <$> getMyInput
+-- >>> countValidP2 <$> getMyInput day2
 -- 711

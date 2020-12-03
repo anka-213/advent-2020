@@ -2,8 +2,17 @@ module Day1 where
 
 import Data.List (tails, sort)
 import Data.Bifunctor (Bifunctor(second))
+import AdventDay
 -- import Relude.List (sort)
 -- import Relude (Bifunctor(second))
+
+day1 :: Day [Int]
+day1 = Day
+    { dayNr = 1
+    , parser = parseDay1
+    , part1 = day1a
+    , part2 = day1b
+    }
 
 parseDay1 :: String -> [Int]
 parseDay1 = map read . lines

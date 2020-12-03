@@ -51,6 +51,7 @@ library
                      , Day2
                      , Day3
                      , Util
+                     , AdventDay
 
 executable advent2020
   import:              common-options
