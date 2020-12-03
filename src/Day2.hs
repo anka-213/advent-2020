@@ -69,3 +69,30 @@ countValid = countSat (uncurry checkPasswd)
 
 -- >>> countValid <$> getMyInput
 -- 515
+
+-- * Part 2
+
+getEdges :: Range -> [a] -> [a]
+-- getEdges Range{from,to} xs = map fst . filter (\(_,n) -> n == from || n == to) $ zip xs [1..]
+getEdges Range{from,to} xs = [x | (x,n) <- zip xs [1..], n == from || n == to]
+
+checkPasswdPart2 :: Policy -> Password -> Bool
+checkPasswdPart2 Policy{range, currentChar} pass =
+    (==1) . countChar currentChar $ getEdges range pass
+    -- inRange range $ countChar currentChar pass
+
+countValidP2 :: [PPPair] -> Int
+countValidP2 = countSat (uncurry checkPasswdPart2)
+
+
+day2part1 :: String -> Int
+day2part1 = countValid . parseFile
+
+day2part2 :: String -> Int
+day2part2 = countValidP2 . parseFile
+
+-- >>> countValidP2 <$> getSampleInput
+-- 1
+
+-- >>> countValidP2 <$> getMyInput
+-- 711
