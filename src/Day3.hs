@@ -37,7 +37,7 @@ day3 :: Day Grid
 day3 = Day
     { dayNr = 3
     , parser = expandGrid . parseDay3
-    , part1 = countTreesOnSlope
+    , part1 = treesOnDefSlope
     , part2 = undefined
     }
 
@@ -93,8 +93,11 @@ followSlope slope = unfoldr slopeStep
 defaultSlope :: Slope
 defaultSlope = Slope {right = 3, down = 1}
 
-countTreesOnSlope :: Grid -> Int
-countTreesOnSlope = countTrees . followSlope defaultSlope
+countTreesOnSlope :: Slope -> Grid -> Int
+countTreesOnSlope slope = countTrees . followSlope slope
+
+treesOnDefSlope :: Grid -> Int
+treesOnDefSlope = countTreesOnSlope defaultSlope
 
 -- >>>  getSampleInput day3
 -- ..##.........##..... …
@@ -118,5 +121,35 @@ countTreesOnSlope = countTrees . followSlope defaultSlope
 
 -- >>> runDay day3 Part1 Real
 -- 189
+
+-- * Part 2
+
+otherSlopes :: [Slope]
+otherSlopes =
+  [ Slope 1 1
+  , Slope 3 1
+  , Slope 5 1
+  , Slope 7 1
+  , Slope 1 2
+  ]
+
+treesOnAllSlopes :: Grid -> [Int]
+treesOnAllSlopes grid = fmap (`countTreesOnSlope` grid) otherSlopes
+
+prodSlopes :: Grid -> Int
+prodSlopes = product . treesOnAllSlopes
+
+-- >>> treesOnAllSlopes <$> getInput Sample day3
+-- [2,7,3,4,2]
+
+-- >>> prodSlopes <$> getInput Sample day3
+-- 336
+
+-- >>> treesOnAllSlopes <$> getInput Real day3
+-- [74,189,65,63,30]
+
+-- >>> prodSlopes <$> getInput Real day3
+-- 1718180100
+
 
 --
