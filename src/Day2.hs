@@ -2,6 +2,7 @@
 module Day2 where
 
 import Text.ParserCombinators.ReadP
+import Util
 
 data Range = Range {from :: Int, to :: Int}
   deriving Show
@@ -57,9 +58,6 @@ getSampleInput = readInputFile "test/cases/day2.input"
 checkPasswd :: Policy -> Password -> Bool
 checkPasswd Policy{range, currentChar} pass =
     inRange range $ countChar currentChar pass
-
-countSat :: (a -> Bool) -> [a] -> Int
-countSat p = length . filter p
 
 countValid :: [PPPair] -> Int
 countValid = countSat (uncurry checkPasswd)
