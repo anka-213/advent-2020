@@ -19,8 +19,8 @@ testLocation Real   Day{dayNr} = "day" ++ show dayNr ++ "/input.txt"
 data Part = Part1 | Part2
 
 runPart :: Part -> Day a -> a -> Output
-runPart Part1 Day{part1} = part1
-runPart Part2 Day{part2} = part2
+runPart Part1 = part1
+runPart Part2 = part2
 
 getRawInput :: TestType -> Day a -> IO String
 getRawInput tt = readFile . testLocation tt

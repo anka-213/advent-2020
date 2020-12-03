@@ -38,7 +38,7 @@ day3 = Day
     { dayNr = 3
     , parser = expandGrid . parseDay3
     , part1 = treesOnDefSlope
-    , part2 = undefined
+    , part2 = prodSlopes
     }
 
 
@@ -64,9 +64,6 @@ stepDown = mapGrid $ drop 1
 stepDir :: Direction -> Grid -> Grid
 stepDir Horiz = stepRight
 stepDir Vert = stepDown
-
-iterN :: Int -> (a -> a) -> a -> a
-iterN n f x = iterate f x !! n
 
 moveDir :: Int -> Direction -> Change
 moveDir n = iterN n . stepDir
@@ -142,13 +139,13 @@ prodSlopes = product . treesOnAllSlopes
 -- >>> treesOnAllSlopes <$> getInput Sample day3
 -- [2,7,3,4,2]
 
--- >>> prodSlopes <$> getInput Sample day3
+-- >>> runDay day3 Part2 Sample
 -- 336
 
 -- >>> treesOnAllSlopes <$> getInput Real day3
 -- [74,189,65,63,30]
 
--- >>> prodSlopes <$> getInput Real day3
+-- >>> runDay day3 Part2 Real
 -- 1718180100
 
 
